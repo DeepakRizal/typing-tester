@@ -1,7 +1,10 @@
 const typingContent = document.querySelector(".typing-content");
 const inputElement = document.querySelector(".type-input");
+const timerElement = document.querySelector(".timer");
 
 const alphabets = "abcdefghijklmnopqrstuvwxyz";
+
+let totalTime = 60;
 
 function getRandomLetter() {
   return alphabets[Math.trunc(Math.random() * alphabets.length)];
@@ -38,6 +41,22 @@ function getRandomParagraph(sentenceCount = 3 + Math.trunc(Math.random() * 5)) {
   return paragraph.join(" ");
 }
 
+//function to start timer on the screen
+let timer;
+
+function startTimer() {
+  if (timer) return;
+  timer = setInterval(() => {
+    if (totalTime > 0) {
+      totalTime--;
+      timerElement.textContent = totalTime;
+    } else {
+      clearInterval(timer);
+      timer = null;
+    }
+  }, 1000);
+}
+
 // Generate a random paragraph when the page loads
 document.addEventListener("DOMContentLoaded", () => {
   typingContent.textContent = getRandomParagraph();
@@ -62,4 +81,8 @@ inputElement.addEventListener("input", () => {
   }
 
   typingContent.innerHTML = updatedHTML;
+});
+
+inputElement.addEventListener("focus", () => {
+  startTimer();
 });
