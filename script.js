@@ -1,4 +1,5 @@
 const typingContent = document.querySelector(".typing-content");
+const inputElement = document.querySelector(".type-input");
 
 const alphabets = "abcdefghijklmnopqrstuvwxyz";
 
@@ -37,6 +38,28 @@ function getRandomParagraph(sentenceCount = 3 + Math.trunc(Math.random() * 5)) {
   return paragraph.join(" ");
 }
 
+// Generate a random paragraph when the page loads
 document.addEventListener("DOMContentLoaded", () => {
   typingContent.textContent = getRandomParagraph();
+});
+
+// Highlight correct and incorrect characters
+inputElement.addEventListener("input", () => {
+  const inputValue = inputElement.value;
+  const originalText = typingContent.textContent;
+  let updatedHTML = "";
+
+  for (let i = 0; i < originalText.length; i++) {
+    if (i < inputValue.length) {
+      if (originalText[i] === inputValue[i]) {
+        updatedHTML += `<span class="correct" >${originalText[i]}</span>`;
+      } else {
+        updatedHTML += `<span class="incorrect" >${originalText[i]}</span>`;
+      }
+    } else {
+      updatedHTML += originalText[i];
+    }
+  }
+
+  typingContent.innerHTML = updatedHTML;
 });
