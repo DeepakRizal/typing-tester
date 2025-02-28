@@ -2,14 +2,13 @@ const typingContent = document.querySelector(".typing-content");
 const inputElement = document.querySelector(".type-input");
 const timerElement = document.querySelector(".timer");
 const wpmElement = document.querySelector(".w-p-m");
-
-console.log(wpmElement); //Fix: Correct variable name
+const reload = document.querySelector(".reload");
 
 const alphabets = "abcdefghijklmnopqrstuvwxyz";
 let totalTime = 60;
 let correctWords = 0;
 let timer;
-let typingFinished = false; //New flag to check if typing is completed
+let typingFinished = false;
 
 function getRandomLetter() {
   return alphabets[Math.trunc(Math.random() * alphabets.length)];
@@ -52,8 +51,9 @@ function startTimer() {
     } else {
       clearInterval(timer);
       timer = null;
-      typingFinished = true; // Mark typing as finished
-      updateWPM(); // Call WPM update ONLY when time is up
+      typingFinished = true;
+      typingContent.style.display = "none"; //Hide text when time is over
+      updateWPM();
     }
   }, 1000);
 }
@@ -71,7 +71,7 @@ function updateWPM() {
 
 // Handle Typing Input
 inputElement.addEventListener("input", () => {
-  if (typingFinished) return; //Prevent updates after time is up
+  if (typingFinished) return;
 
   const inputValue = inputElement.value;
   const originalText = typingContent.textContent;
@@ -102,4 +102,8 @@ inputElement.addEventListener("input", () => {
 // Start Timer When Typing Starts
 inputElement.addEventListener("focus", () => {
   startTimer();
+});
+
+reload.addEventListener("click", () => {
+  location.reload();
 });
